@@ -354,7 +354,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         return ComboVideoDevice.getSelectedItem();
     }
     
-    public void getVideoFormat() {}
+    public Object getVideoFormat() {return ComboVideoFormat.getSelectedItem();}
     
     /** Liefert das gewaehlte Audio Device zurück
      * @return das aktuell gewaehlte Video Device als Object
@@ -363,9 +363,9 @@ public class OptionsDialog extends javax.swing.JFrame {
         return ComboAudioDevice.getSelectedItem();
     }
     
-    public void getAudioFormat() {}
-    public void getAudioCodec() {}
-    public void getVideoCodec() {}
+    public Object getAudioFormat() {return ComboAudioFormat.getSelectedItem();}
+    public Object getAudioCodec() {return ComboAudioCodec.getSelectedItem();}
+    public Object getVideoCodec() {return ComboVideoCodec.getSelectedItem();}
     
     /** Liefert den in dem Optionsmenü eingestellten Kommunikationsport zurück
      * @return der Kommunikationsport
