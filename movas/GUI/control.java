@@ -29,6 +29,7 @@ public class control extends javax.swing.JFrame {
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()),
         (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()));
+        
     }
     
     /** This method is called from within the constructor to
@@ -38,6 +39,7 @@ public class control extends javax.swing.JFrame {
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -55,10 +57,13 @@ public class control extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setLayout(new java.awt.GridLayout(8, 0, 0, 5));
+        jPanel1.setLayout(new java.awt.GridLayout(9, 1, 2, 8));
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(100, 180));
+        jPanel1.add(jPanel2);
 
         jButton7.setMnemonic('v');
-        jButton7.setText("direkte Verbindung");
+        jButton7.setText("Verbindung");
         jButton7.setToolTipText("eine direkte Verbindung anw\u00e4hlen");
         jButton7.setActionCommand("direkt");
         jButton7.setBorder(null);
@@ -101,7 +106,7 @@ public class control extends javax.swing.JFrame {
 
         jButton3.setMnemonic('c');
         jButton3.setText("Chatfenster");
-        jButton3.setToolTipText("Text-Caht Fenster \u00f6ffnen");
+        jButton3.setToolTipText("Text-Chat Fenster \u00f6ffnen");
         jButton3.setBorder(null);
         jButton3.setFocusPainted(false);
         jButton3.setEnabled(false);
@@ -168,7 +173,7 @@ public class control extends javax.swing.JFrame {
     private void actionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionPerformed
         String cmd = evt.getActionCommand();
         
-        if(cmd == "Beenden") System.exit(0);
+        if(cmd == "Beenden") {if (sendefenster!=null)sendefenster.kill();System.exit(0);}
         else if(cmd == "direkt") {
             if(callDialog == null) callDialog = new CallDialog();
             callDialog.show();
@@ -227,6 +232,7 @@ public class control extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
     
 }
