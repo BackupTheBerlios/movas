@@ -52,6 +52,15 @@ public class InitFileHandler {
         //System.out.println(struct.AudioDevice);
     }
     
+    public Structure read() throws java.lang.Exception{
+        FileInputStream fos = new FileInputStream("./setup.cfg");
+        ObjectInputStream f = new ObjectInputStream(fos);
+        Structure struct = new Structure();
+        struct=((Structure)f.readObject());
+        f.close();
+        fos.close();
+        return struct;
+    }
 
 
     

@@ -20,10 +20,15 @@ public class video extends javax.swing.JFrame {
     /** Creates new form video */
     public video() {
         initComponents();
+        JPanelInitVideo=new movas.Init.InitVideo();
+        this.getContentPane().add(JPanelInitVideo);
+        this.repaint();
     }
     
     public video(int typ){
+        initComponents();
         this.typ = typ;
+        this.getContentPane().add(new movas.Init.InitVideo());
     }
     
     /** This method is called from within the constructor to
@@ -76,6 +81,7 @@ public class video extends javax.swing.JFrame {
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         this.setVisible(false);
+       ((movas.Init.InitVideo)JPanelInitVideo).stop(); 
     }//GEN-LAST:event_exitForm
     
     /**
@@ -85,7 +91,7 @@ public class video extends javax.swing.JFrame {
         new video().show();
     }
     
-    
+    private javax.swing.JPanel JPanelInitVideo;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

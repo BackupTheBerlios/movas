@@ -94,11 +94,13 @@ public class DeviceInfo {
       * @param  Der Name des Formates
       * @return Format
       */     
-     public javax.media.Format getFormat(CaptureDeviceInfo device, String format){
+     public javax.media.Format getFormatByName(CaptureDeviceInfo device, String format){
          javax.media.Format formats[]=device.getFormats();
          for (int y = 0; y < formats.length; y++){
-            if(formats[y].toString()==format){
+            if(formats[y].toString().equals(format)){
+                System.out.println("TRUETRUERAMTRUESTEN");
                 return formats[y];
+                
             }
          }
          return null;
