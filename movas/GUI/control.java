@@ -15,10 +15,13 @@ public class control extends javax.swing.JFrame {
     private video   sendefenster=null;
     private chat    chatfenster=null;
     private OptionsDialog optionsfenster=null;
+    private HilfeFenster hilfefenster=null;
     /** Creates new form control */
     public control() {
         initComponents();
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()/2),
+        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()/2));
     }
     
     /** This method is called from within the constructor to
@@ -50,7 +53,9 @@ public class control extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridLayout(8, 0, 0, 5));
 
+        jButton1.setMnemonic('e');
         jButton1.setText("Empfangsfenster");
+        jButton1.setToolTipText("Empfangsfenster \u00f6ffnen");
         jButton1.setBorder(null);
         jButton1.setFocusPainted(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -61,7 +66,9 @@ public class control extends javax.swing.JFrame {
 
         jPanel1.add(jButton1);
 
+        jButton2.setMnemonic('s');
         jButton2.setText("Sendefenster");
+        jButton2.setToolTipText("Video Sendefenster \u00f6ffnen");
         jButton2.setBorder(null);
         jButton2.setFocusPainted(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -72,7 +79,9 @@ public class control extends javax.swing.JFrame {
 
         jPanel1.add(jButton2);
 
+        jButton3.setMnemonic('c');
         jButton3.setText("Chatfenster");
+        jButton3.setToolTipText("Text-Caht Fenster \u00f6ffnen");
         jButton3.setBorder(null);
         jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -83,7 +92,9 @@ public class control extends javax.swing.JFrame {
 
         jPanel1.add(jButton3);
 
+        jButton4.setMnemonic('o');
         jButton4.setText("Optionen");
+        jButton4.setToolTipText("Einstellungsfenster \u00f6ffnen");
         jButton4.setBorder(null);
         jButton4.setFocusPainted(false);
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -94,30 +105,48 @@ public class control extends javax.swing.JFrame {
 
         jPanel1.add(jButton4);
 
+        jButton5.setMnemonic('k');
         jButton5.setText("Kontakte");
+        jButton5.setToolTipText("Telefonbuch \u00f6ffnen");
         jButton5.setBorder(null);
         jButton5.setFocusPainted(false);
         jPanel1.add(jButton5);
 
+        jButton6.setMnemonic('h');
         jButton6.setText("Hilfe");
+        jButton6.setToolTipText("Hilfe anzeigen");
         jButton6.setBorder(null);
         jButton6.setFocusPainted(false);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                control.this.actionPerformed(evt);
+            }
+        });
+
         jPanel1.add(jButton6);
 
+        jButton7.setMnemonic('v');
         jButton7.setText("direkte Verbindung");
+        jButton7.setToolTipText("eine direkte Verbindung anw\u00e4hlen");
         jButton7.setBorder(null);
         jButton7.setFocusPainted(false);
         jPanel1.add(jButton7);
 
+        jButton8.setMnemonic('a');
         jButton8.setText("Auflegen");
+        jButton8.setToolTipText("aktuelle Verbindung beenden");
         jButton8.setBorder(null);
         jButton8.setFocusPainted(false);
         jPanel1.add(jButton8);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
+        jMenu2.setMnemonic('d');
         jMenu2.setText("Datei");
+        jMenu2.setToolTipText("Datei Men\u00fc");
+        jMenuItem1.setMnemonic('b');
         jMenuItem1.setText("Beenden");
+        jMenuItem1.setToolTipText("Programm beenden");
         jMenuItem1.setBorder(null);
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,6 +183,10 @@ public class control extends javax.swing.JFrame {
         else if(cmd == "Optionen"){
             if(optionsfenster == null) optionsfenster = new OptionsDialog();
             optionsfenster.show();
+        }
+        else if(cmd == "Hilfe"){
+            if(hilfefenster == null) hilfefenster = new HilfeFenster();
+            hilfefenster.show();
         }
     }//GEN-LAST:event_actionPerformed
     

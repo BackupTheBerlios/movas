@@ -16,6 +16,8 @@ public class chat extends javax.swing.JFrame {
     public chat() {
         initComponents();
         init();
+        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()/2),
+        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()/2));
     }
     
     /** This method is called from within the constructor to

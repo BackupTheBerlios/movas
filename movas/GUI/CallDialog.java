@@ -54,6 +54,7 @@ public class CallDialog extends javax.swing.JFrame {
         jPanel2.add(jLabel1);
 
         jComboBox1.setEditable(true);
+        jComboBox1.setToolTipText("die IP-Adresse, oder URL des Partners eingeben");
         jComboBox1.setPreferredSize(new java.awt.Dimension(190, 25));
         jPanel2.add(jComboBox1);
 
@@ -61,6 +62,7 @@ public class CallDialog extends javax.swing.JFrame {
         jPanel2.add(jLabel2);
 
         jTextField2.setText("7340");
+        jTextField2.setToolTipText("den Port eingeben, auf dem der Partner arbeitet");
         jTextField2.setPreferredSize(new java.awt.Dimension(50, 20));
         jPanel2.add(jTextField2);
 
@@ -70,10 +72,12 @@ public class CallDialog extends javax.swing.JFrame {
 
         jButtonAnrufen.setMnemonic('A');
         jButtonAnrufen.setText("Anrufen");
+        jButtonAnrufen.setToolTipText("Verbindung aufbauen");
         jPanel4.add(jButtonAnrufen);
 
         jButtonAbbrechen.setMnemonic('b');
         jButtonAbbrechen.setText("Abbrechen");
+        jButtonAbbrechen.setToolTipText("Abbrechen");
         jButtonAbbrechen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAbbrechenActionPerformed(evt);

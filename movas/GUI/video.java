@@ -23,6 +23,8 @@ public class video extends javax.swing.JFrame {
         //this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         JPanelInitVideo=new movas.Init.InitVideo();
         this.getContentPane().add(JPanelInitVideo);
+        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()/2),
+        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()/2));
         this.repaint();
     }
     
@@ -30,9 +32,14 @@ public class video extends javax.swing.JFrame {
         initComponents();
         //this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.typ = typ;
-        if(typ==EMPFANG){}
+        if(typ==EMPFANG){
+        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2),
+        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()));
+        }
         else{
         JPanelInitVideo=new movas.Init.InitVideo();
+        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2),
+        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2));
         }
         this.getContentPane().add(JPanelInitVideo);
         this.repaint();
@@ -64,7 +71,9 @@ public class video extends javax.swing.JFrame {
         jLabel1.setText("Sie sind mit bla verbunden");
         jPanel1.add(jLabel1, java.awt.BorderLayout.CENTER);
 
+        jButton1.setMnemonic('a');
         jButton1.setText("Ausblenden");
+        jButton1.setToolTipText("Fenster schliessen");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ActionPerformed(evt);
@@ -79,7 +88,8 @@ public class video extends javax.swing.JFrame {
 
         getContentPane().add(jPanelVideo, java.awt.BorderLayout.CENTER);
 
-        pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-300)/2, (screenSize.height-240)/2, 300, 240);
     }//GEN-END:initComponents
 
     private void ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionPerformed

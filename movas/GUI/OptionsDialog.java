@@ -89,6 +89,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
 
+        jTabbedPane1.setToolTipText("Auswahl und Einstellungen f\u00fcr die Aufnahme Ger\u00e4te");
         jPanel1.setLayout(new java.awt.GridLayout(2, 1, 10, 20));
 
         jPanel2.setLayout(new java.awt.GridLayout(4, 1, 10, 0));
@@ -105,6 +106,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         ComboAudioDevice.setBackground(new java.awt.Color(255, 255, 255));
+        ComboAudioDevice.setToolTipText("Das Audio Aufnahmeger\u00e4t ausw\u00e4hlen");
         ComboAudioDevice.setActionCommand("audio");
         ComboAudioDevice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,6 +129,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         jPanel7.setLayout(new java.awt.BorderLayout());
 
         ComboAudioFormat.setBackground(new java.awt.Color(255, 255, 255));
+        ComboAudioFormat.setToolTipText("Das Format f\u00fcr das Audioger\u00e4t einstellen");
         jPanel7.add(ComboAudioFormat, java.awt.BorderLayout.NORTH);
 
         jPanel2.add(jPanel7);
@@ -147,6 +150,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         ComboVideoDevice.setBackground(new java.awt.Color(255, 255, 255));
+        ComboVideoDevice.setToolTipText("Das Video Aufnahmeger\u00e4t ausw\u00e4hlen");
         ComboVideoDevice.setActionCommand("video");
         ComboVideoDevice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +173,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         jPanel11.setLayout(new java.awt.BorderLayout());
 
         ComboVideoFormat.setBackground(new java.awt.Color(255, 255, 255));
+        ComboVideoFormat.setToolTipText("Das Format f\u00fcr das Videoger\u00e4t einstellen");
         jPanel11.add(ComboVideoFormat, java.awt.BorderLayout.NORTH);
 
         jPanel3.add(jPanel11);
@@ -183,6 +188,7 @@ public class OptionsDialog extends javax.swing.JFrame {
 
         jPanel18.setBorder(new javax.swing.border.TitledBorder("AudioCodec"));
         ComboAudioCodec.setBackground(new java.awt.Color(255, 255, 255));
+        ComboAudioCodec.setToolTipText("Codierung und Kompression f\u00fcr die Tonspur einstellen");
         jPanel18.add(ComboAudioCodec, java.awt.BorderLayout.NORTH);
 
         jPanel16.add(jPanel18);
@@ -191,6 +197,7 @@ public class OptionsDialog extends javax.swing.JFrame {
 
         jPanel19.setBorder(new javax.swing.border.TitledBorder("VideoCodec"));
         ComboVideoCodec.setBackground(new java.awt.Color(255, 255, 255));
+        ComboVideoCodec.setToolTipText("Codierung und Kompression f\u00fcr die Videospur einstellen");
         jPanel19.add(ComboVideoCodec, java.awt.BorderLayout.NORTH);
 
         jPanel16.add(jPanel19);
@@ -200,6 +207,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         jPanel20.setBorder(new javax.swing.border.TitledBorder("Kommunikationsport"));
         TextFieldPort.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         TextFieldPort.setText("7340");
+        TextFieldPort.setToolTipText("Den Port f\u00fcr die Verbindung einstellen");
         jPanel20.add(TextFieldPort, java.awt.BorderLayout.NORTH);
 
         jPanel16.add(jPanel20);
@@ -214,6 +222,7 @@ public class OptionsDialog extends javax.swing.JFrame {
 
         jButton_OK.setMnemonic('o');
         jButton_OK.setText("OK");
+        jButton_OK.setToolTipText("OK");
         jButton_OK.setPreferredSize(new java.awt.Dimension(107, 26));
         jButton_OK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,6 +234,7 @@ public class OptionsDialog extends javax.swing.JFrame {
 
         jButton_Apply.setMnemonic('b');
         jButton_Apply.setText("\u00dcbernehmen");
+        jButton_Apply.setToolTipText("Einstellungen \u00fcbernehmen");
         jButton_Apply.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_ApplyActionPerformed(evt);
@@ -235,6 +245,7 @@ public class OptionsDialog extends javax.swing.JFrame {
 
         jButton_Abort.setMnemonic('a');
         jButton_Abort.setText("Abbrechen");
+        jButton_Abort.setToolTipText("Abbrechen und Einstellungen verwerfen");
         jButton_Abort.setPreferredSize(new java.awt.Dimension(107, 26));
         jButton_Abort.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
