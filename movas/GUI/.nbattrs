@@ -4,6 +4,9 @@
     <fileobject name="control.java">
         <attr name="class_dependency_javax.swing.JFrame" stringvalue="control"/>
     </fileobject>
+    <fileobject name="wincat.bat">
+        <attr name="org.netbeans.modules.text.IsTextFile" boolvalue="true"/>
+    </fileobject>
     <fileobject name="chat.java">
         <attr name="class_dependency_javax.swing.JFrame" stringvalue="chat"/>
     </fileobject>
