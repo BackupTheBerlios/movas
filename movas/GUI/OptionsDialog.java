@@ -296,7 +296,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         try{
         new movas.Init.InitFileHandler().write(this);
         }catch(Exception e){e.printStackTrace();}
-        System.exit(0);
+        this.hide();
     }//GEN-LAST:event_jButton_OKActionPerformed
    
     /** Die VideoComboBox mit Inhalt füllen

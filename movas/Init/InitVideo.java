@@ -26,33 +26,36 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
     DataSink filewriter = null;
     Processor processor = null;
     boolean configured = false;
-     boolean realized = false;
-        private static boolean			debugDeviceList = false;   
-        private static String			defaultVideoDeviceName = "vfw:Microsoft WDM Image Capture (Win32):0";
-	private static String			defaultAudioDeviceName = "DirectSoundCapture";   
-        private static CaptureDeviceInfo	captureVideoDevice = null;
-	private static CaptureDeviceInfo	captureAudioDevice = null;
-	
+    boolean realized = false;
+        
+    private static boolean			debugDeviceList = false;   
+    private static String			defaultVideoDeviceName = null;
+    private static String			defaultAudioDeviceName = null;   
+    private static CaptureDeviceInfo            captureVideoDevice = null;
+    private static CaptureDeviceInfo            captureAudioDevice = null;
+    private static Structure                    struct=null;
+    private static DeviceInfo                   DI=null;
+   
 
     
     /** Creates new form Video */
     public InitVideo() {
         initComponents();
+        try{
+            struct=new InitFileHandler().read();
+        }catch(Exception e){e.printStackTrace();}
+        DI=new DeviceInfo();   
         getDevices();
         this.setLayout(new BorderLayout());
         
                 MediaLocator videoMediaLocator = captureVideoDevice.getLocator();
                 DataSource videoDataSource = null;
-                //DataSource videoDataSource2 = null;
                 try
 		{
-			//videoDataSource = javax.media.Manager.createDataSource(videoMediaLocator);
-                        //videoDataSource2 = javax.media.Manager.createDataSource(videoMediaLocator);
                         videoDataSource = javax.media.Manager.createCloneableDataSource(javax.media.Manager.createDataSource(videoMediaLocator));
 		}
 		catch (Exception ie) { }
-                
-                
+               
                 
                 FormatControl formatControls[] = null;
 		formatControls = ((CaptureDevice) videoDataSource).getFormatControls();
@@ -60,20 +63,9 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
 		{
 			if (formatControls[x] == null)
 				continue;
-
-			Format supportedFormats[] = formatControls[x].getSupportedFormats();
-			if (supportedFormats == null)
-				continue;
-
-                        for (int i=0;i<supportedFormats.length;i++)
-                        System.out.println("++FORMAT -"+i+ "-: "+supportedFormats[i].toString());
                         
-                        formatControls[x].setFormat(supportedFormats[18]);
+                        formatControls[x].setFormat(DI.getFormatByName(captureVideoDevice,struct.VideoFormat));
 		}
-
-                
-                
-                
                 
                 MediaLocator audioMediaLocator = captureAudioDevice.getLocator();
                 DataSource audioDataSource = null;
@@ -83,9 +75,13 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
 		}
 		catch (Exception ie) { }
 		formatControls = ((CaptureDevice) audioDataSource).getFormatControls();
-                Format supportedFormats[] = formatControls[0].getSupportedFormats();
-                formatControls[0].setFormat(supportedFormats[27]);
+                for (int x = 0; x < formatControls.length; x++)
+		{
+			if (formatControls[x] == null)
+				continue;
                 
+                    formatControls[x].setFormat(DI.getFormatByName(captureAudioDevice,struct.AudioFormat));
+                }
                 // merge the two data sources
 		// --------------------------
 		DataSource mixedDataSource = null;
@@ -98,7 +94,6 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
 		}
 		catch (Exception ise) {  }
 
-
                 
                 
                 
@@ -107,18 +102,13 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
                 } catch (Exception exe) {}
                 processor.addControllerListener(this);
                 processor.configure();
-                
-                while (!configured) {}
+                while (!configured) {try{this.wait(1000);}catch(Exception e){}}
                 processor.setContentDescriptor(new FileTypeDescriptor(FileTypeDescriptor.MSVIDEO));
-               
                 processor.getTrackControls()[0].setFormat(new VideoFormat(VideoFormat.H263));
-                Format[] VF=processor.getTrackControls()[0].getSupportedFormats();
-                for (int i=0; i<VF.length;i++) System.out.println("VF "+i+" : "+VF[i].toString());
                 processor.getTrackControls()[1].setFormat(new AudioFormat(AudioFormat.GSM_MS));
-                Format[] AF=processor.getTrackControls()[1].getSupportedFormats();
-                for (int i=0; i<AF.length;i++) System.out.println("AF "+i+" : "+AF[i].toString());
                 processor.realize();
-                while (!realized) {}
+                
+                while (!realized) {try{this.wait(1000);}catch(Exception e){}}
 		DataSource source = processor.getDataOutput();
                 
                MediaLocator dest = new MediaLocator("file:///D:/test2.avi");
@@ -129,9 +119,8 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
       filewriter = Manager.createDataSink(source, dest);
       filewriter.open();
   } catch (Exception e) {}
- 
-                               
-                for (int i=0;i<processor.getSupportedContentDescriptors().length;i++) {
+               //nur zu Testzwecken                
+               /* for (int i=0;i<processor.getSupportedContentDescriptors().length;i++) {
                     System.out.println("FORMAT: "+(processor.getSupportedContentDescriptors())[i].toString());
                 }
                 for (int i=0;i<processor.getTrackControls().length;i++) {
@@ -147,7 +136,8 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
                 Enumeration plg = plgin.elements();
                 while (plg.hasMoreElements()) {
                     System.out.println("PLUGIN.x: "+plg.nextElement().toString());
-                }
+                }*/ 
+  
                 try{
                 processor.start();
                 filewriter.start();
@@ -164,7 +154,6 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
         repaint();
         titelleiste=this.getHeight(); 
         player.start();     
-       
     }
     
     public void start() { 
@@ -173,11 +162,15 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
     public void stop(){
         try {
             processor.stop();
+            player.stop();
+            player.close();
             processor.close();
             filewriter.close();
         } catch (Exception ex) {}
     }
     public void destroy() {
+        this.removeAll();
+        System.exit(0);
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -185,72 +178,26 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
      * always regenerated by the Form Editor.
      */
     private void initComponents() {
-        VPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
+        //VPanel = new javax.swing.JPanel();
+        //jPanel1 = new javax.swing.JPanel();
+        
 
-        VPanel.setLayout(new java.awt.BorderLayout());
+        this.setLayout(new java.awt.BorderLayout());
 
-        this.add(VPanel, java.awt.BorderLayout.CENTER);
+        //this.add(VPanel, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jComboBox1);
+        
 
-        this.add(jPanel1, java.awt.BorderLayout.SOUTH);
+        //this.add(jPanel1, java.awt.BorderLayout.SOUTH);
 
     }
     
-    /** Exit the Application */
-    private void exitForm(java.awt.event.WindowEvent evt) {
-        stop();
-        destroy();
-        System.exit(0);
-    }
+   
     
     public void getDevices() {
-        java.util.Vector deviceListVector = CaptureDeviceManager.getDeviceList(null);
-        for (int x = 0; x < deviceListVector.size(); x++)
-		{
-			// display device name
-			CaptureDeviceInfo deviceInfo = (CaptureDeviceInfo) deviceListVector.elementAt(x);
-			String deviceInfoText = deviceInfo.getName();
-                        
-                        
-                        //+++++
-                        jComboBox1.addItem(deviceInfoText);
-                        //+++++
-                        
-                        
-			//System.out.println("device " + x + ": " + deviceInfoText);
-                        
-                        Format deviceFormat[] = deviceInfo.getFormats();
-			for (int y = 0; y < deviceFormat.length; y++)
-			{
-				// serach for default video device
-                            System.out.println("Format: --"+x+"--"+y+"--"+deviceFormat[y].toString());
-				if (captureVideoDevice == null)
-					if (deviceFormat[7] instanceof VideoFormat)
-					if (deviceInfo.getName().indexOf(defaultVideoDeviceName) >= 0)
-				{
-					captureVideoDevice = deviceInfo;
-					//System.out.println(">>> capture video device = " + deviceInfo.getName());
-				}
-
-				// search for default video format
-				
-					
-				// serach for default audio device
-				if (captureAudioDevice == null)
-					if (deviceFormat[y] instanceof AudioFormat)
-					if (deviceInfo.getName().indexOf(defaultAudioDeviceName) >= 0)
-				{
-					captureAudioDevice = deviceInfo;
-					//System.out.println(">>> capture audio device = " + deviceInfo.getName());
-				}
-
-				// search for default audio format
-                      }
-                        
-        }
+        
+        captureVideoDevice=DI.getVideoDevice(struct.VideoDevice);
+        captureAudioDevice=DI.getAudioDevice(struct.AudioDevice);
     }
     
     /**
@@ -262,21 +209,21 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
             realized=true;
             try {
             Component comp;
-            if ((comp = player.getVisualComponent())!=null) VPanel.add("Center",comp);
-            if ((comp = player.getControlPanelComponent())!=null) VPanel.add("South",comp);           
+            if ((comp = player.getVisualComponent())!=null) this.add("Center",comp);
+            if ((comp = player.getControlPanelComponent())!=null) this.add("South",comp);           
             this.setSize(player.getVisualComponent().getPreferredSize().width+8,player.getVisualComponent().getPreferredSize().height+player.getControlPanelComponent().getPreferredSize().height+titelleiste);
-            VPanel.setBounds(0,0,320,250);
+            //this.setBounds(0,0,320,250);
             validate(); 
             } catch (Exception e) {}
         }
         if (event instanceof ConfigureCompleteEvent) configured = true;
-        System.out.println(event.toString());
+       // System.out.println(event.toString());
     }    
     
     // Variables declaration - do not modify
-    private javax.swing.JPanel VPanel;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JPanel jPanel1;
+   // private javax.swing.JPanel VPanel;
+    
+   // private javax.swing.JPanel jPanel1;
     // End of variables declaration
     
     

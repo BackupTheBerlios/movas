@@ -20,6 +20,7 @@ public class video extends javax.swing.JFrame {
     /** Creates new form video */
     public video() {
         initComponents();
+        //this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         JPanelInitVideo=new movas.Init.InitVideo();
         this.getContentPane().add(JPanelInitVideo);
         this.repaint();
@@ -27,8 +28,14 @@ public class video extends javax.swing.JFrame {
     
     public video(int typ){
         initComponents();
+        //this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.typ = typ;
-        this.getContentPane().add(new movas.Init.InitVideo());
+        if(typ==EMPFANG){}
+        else{
+        JPanelInitVideo=new movas.Init.InitVideo();
+        }
+        this.getContentPane().add(JPanelInitVideo);
+        this.repaint();
     }
     
     /** This method is called from within the constructor to
@@ -43,6 +50,8 @@ public class video extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jPanelVideo = new javax.swing.JPanel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Sendefenster");
         setName("Videoframe");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -82,14 +91,17 @@ public class video extends javax.swing.JFrame {
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         this.setVisible(false);
        ((movas.Init.InitVideo)JPanelInitVideo).stop(); 
+       //System.exit(0);
     }//GEN-LAST:event_exitForm
     
+    public void kill(){((movas.Init.InitVideo)JPanelInitVideo).stop();}
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        new video().show();
+        new video(1).show();
     }
+
     
     private javax.swing.JPanel JPanelInitVideo;
     // Variables declaration - do not modify//GEN-BEGIN:variables

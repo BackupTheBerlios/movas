@@ -12,10 +12,13 @@ package movas.GUI;
  */
 public class control extends javax.swing.JFrame {
     private video   empfangsfenster=null;
+    private video   sendefenster=null;
     private chat    chatfenster=null;
+    private OptionsDialog optionsfenster=null;
     /** Creates new form control */
     public control() {
         initComponents();
+        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
     }
     
     /** This method is called from within the constructor to
@@ -37,6 +40,7 @@ public class control extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Kontrollfeld");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -60,6 +64,12 @@ public class control extends javax.swing.JFrame {
         jButton2.setText("Sendefenster");
         jButton2.setBorder(null);
         jButton2.setFocusPainted(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                control.this.actionPerformed(evt);
+            }
+        });
+
         jPanel1.add(jButton2);
 
         jButton3.setText("Chatfenster");
@@ -76,6 +86,12 @@ public class control extends javax.swing.JFrame {
         jButton4.setText("Optionen");
         jButton4.setBorder(null);
         jButton4.setFocusPainted(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                control.this.actionPerformed(evt);
+            }
+        });
+
         jPanel1.add(jButton4);
 
         jButton5.setText("Kontakte");
@@ -123,17 +139,28 @@ public class control extends javax.swing.JFrame {
         
         if(cmd == "Beenden") System.exit(0);
         else if(cmd == "Empfangsfenster") {
-            if(empfangsfenster == null) empfangsfenster = new video();
+            if(empfangsfenster == null) empfangsfenster = new video(video.EMPFANG);
             empfangsfenster.show();
+        }
+        else if(cmd == "Sendefenster") {
+            if(sendefenster == null) sendefenster = new video(video.VERSAND);
+            sendefenster.show();
+            
         }
         else if(cmd == "Chatfenster"){
             if(chatfenster == null) chatfenster = new chat();
             chatfenster.show();
         }
+        else if(cmd == "Optionen"){
+            if(optionsfenster == null) optionsfenster = new OptionsDialog();
+            optionsfenster.show();
+        }
     }//GEN-LAST:event_actionPerformed
     
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
+        if (sendefenster!=null)sendefenster.kill();
+        //System.gc();
         System.exit(0);
     }//GEN-LAST:event_exitForm
     

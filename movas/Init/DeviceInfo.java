@@ -98,9 +98,7 @@ public class DeviceInfo {
          javax.media.Format formats[]=device.getFormats();
          for (int y = 0; y < formats.length; y++){
             if(formats[y].toString().equals(format)){
-                System.out.println("TRUETRUERAMTRUESTEN");
                 return formats[y];
-                
             }
          }
          return null;
