@@ -53,21 +53,7 @@ public class InitFileHandler {
     }
     
 
-    private class Structure implements java.io.Serializable{
-        
-        public Structure(){
-            super();
-        }
-        public int KomPort;
-        public String VideoDevice;
-        public String AudioDevice;
-        public String VideoFormat;
-        public String AudioFormat;
-        public String VideoCodec;
-        public String AudioCodec;
-        
-    }
-    
+
     
 }
 
