@@ -30,7 +30,7 @@ public class InitFileHandler {
         struct.VideoFormat  =(String)options.getVideoFormat();
         struct.AudioCodec   =(String)options.getAudioCodec();
         struct.VideoCodec   =(String)options.getVideoCodec();
-        f.writeObject((Object)struct);
+        f.writeObject(struct);
         f.close();
         fos.close();
     }
@@ -49,9 +49,25 @@ public class InitFileHandler {
         options.setSelectedVideoFormat(struct.VideoFormat);
         options.setSelectedAudioCodec(struct.AudioCodec);
         options.setSelectedVideoCodec(struct.VideoCodec);
-        System.out.println(struct.AudioDevice);
+        //System.out.println(struct.AudioDevice);
     }
     
 
+    private class Structure implements java.io.Serializable{
+        
+        public Structure(){
+            super();
+        }
+        public int KomPort;
+        public String VideoDevice;
+        public String AudioDevice;
+        public String VideoFormat;
+        public String AudioFormat;
+        public String VideoCodec;
+        public String AudioCodec;
+        
+    }
+    
+    
 }
 
