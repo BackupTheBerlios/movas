@@ -383,8 +383,11 @@ public class OptionsDialog extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
-        new OptionsDialog().show();
+        try{
+        OptionsDialog tmp=new OptionsDialog();
+        tmp.show();
+        new movas.Init.InitFileHandler().write(tmp);
+        }catch(Exception e){}
         
         
         
