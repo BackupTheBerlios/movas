@@ -30,7 +30,7 @@ public class CallDialog extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
@@ -53,15 +53,13 @@ public class CallDialog extends javax.swing.JFrame {
         jLabel1.setText("Adresse:");
         jPanel2.add(jLabel1);
 
-        jComboBox1.setEditable(true);
-        jComboBox1.setToolTipText("die IP-Adresse, oder URL des Partners eingeben");
-        jComboBox1.setPreferredSize(new java.awt.Dimension(190, 25));
-        jPanel2.add(jComboBox1);
+        jTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel2.add(jTextField1);
 
         jLabel2.setText("Port:");
         jPanel2.add(jLabel2);
 
-        jTextField2.setText("7340");
+        jTextField2.setText("22222");
         jTextField2.setToolTipText("den Port eingeben, auf dem der Partner arbeitet");
         jTextField2.setPreferredSize(new java.awt.Dimension(50, 20));
         jPanel2.add(jTextField2);
@@ -71,8 +69,14 @@ public class CallDialog extends javax.swing.JFrame {
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
 
         jButtonAnrufen.setMnemonic('A');
-        jButtonAnrufen.setText("Anrufen");
+        jButtonAnrufen.setText("OK");
         jButtonAnrufen.setToolTipText("Verbindung aufbauen");
+        jButtonAnrufen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAbbrechenActionPerformed(evt);
+            }
+        });
+
         jPanel4.add(jButtonAnrufen);
 
         jButtonAbbrechen.setMnemonic('b');
@@ -98,7 +102,7 @@ public class CallDialog extends javax.swing.JFrame {
     
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
-        System.exit(0);
+        this.hide();
     }//GEN-LAST:event_exitForm
     
     /**
@@ -108,16 +112,23 @@ public class CallDialog extends javax.swing.JFrame {
         new CallDialog().show();
     }
     
+    public String getAddress(){
+        return jTextField1.getText();
+    }
+    
+    public int getPort(){
+        return Integer.parseInt(jTextField2.getText());
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAbbrechen;
     private javax.swing.JButton jButtonAnrufen;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
     

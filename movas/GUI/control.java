@@ -19,6 +19,10 @@ public class control extends javax.swing.JFrame {
     private chat    chatfenster=null;
     private OptionsDialog optionsfenster=null;
     private HilfeFenster hilfefenster=null;
+    private CallDialog callDialog = null;
+    
+    private String address = null;
+    private int DestPort = 0;
     /** Creates new form control */
     public control() {
         initComponents();
@@ -34,17 +38,14 @@ public class control extends javax.swing.JFrame {
      */
     private void initComponents() {//GEN-BEGIN:initComponents
         jPanel1 = new javax.swing.JPanel();
+        jButton7 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
-        jMenuBar2 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Kontrollfeld");
@@ -56,11 +57,26 @@ public class control extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridLayout(8, 0, 0, 5));
 
+        jButton7.setMnemonic('v');
+        jButton7.setText("direkte Verbindung");
+        jButton7.setToolTipText("eine direkte Verbindung anw\u00e4hlen");
+        jButton7.setActionCommand("direkt");
+        jButton7.setBorder(null);
+        jButton7.setFocusPainted(false);
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                control.this.actionPerformed(evt);
+            }
+        });
+
+        jPanel1.add(jButton7);
+
         jButton1.setMnemonic('e');
         jButton1.setText("Empfangsfenster");
         jButton1.setToolTipText("Empfangsfenster \u00f6ffnen");
         jButton1.setBorder(null);
         jButton1.setFocusPainted(false);
+        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 control.this.actionPerformed(evt);
@@ -74,6 +90,7 @@ public class control extends javax.swing.JFrame {
         jButton2.setToolTipText("Video Sendefenster \u00f6ffnen");
         jButton2.setBorder(null);
         jButton2.setFocusPainted(false);
+        jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 control.this.actionPerformed(evt);
@@ -87,6 +104,7 @@ public class control extends javax.swing.JFrame {
         jButton3.setToolTipText("Text-Caht Fenster \u00f6ffnen");
         jButton3.setBorder(null);
         jButton3.setFocusPainted(false);
+        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 control.this.actionPerformed(evt);
@@ -113,6 +131,7 @@ public class control extends javax.swing.JFrame {
         jButton5.setToolTipText("Telefonbuch \u00f6ffnen");
         jButton5.setBorder(null);
         jButton5.setFocusPainted(false);
+        jButton5.setEnabled(false);
         jPanel1.add(jButton5);
 
         jButton6.setMnemonic('h');
@@ -128,40 +147,20 @@ public class control extends javax.swing.JFrame {
 
         jPanel1.add(jButton6);
 
-        jButton7.setMnemonic('v');
-        jButton7.setText("direkte Verbindung");
-        jButton7.setToolTipText("eine direkte Verbindung anw\u00e4hlen");
-        jButton7.setBorder(null);
-        jButton7.setFocusPainted(false);
-        jPanel1.add(jButton7);
-
-        jButton8.setMnemonic('a');
-        jButton8.setText("Auflegen");
-        jButton8.setToolTipText("aktuelle Verbindung beenden");
+        jButton8.setMnemonic('b');
+        jButton8.setText("Beenden");
+        jButton8.setToolTipText("Das Programm beenden");
         jButton8.setBorder(null);
         jButton8.setFocusPainted(false);
-        jPanel1.add(jButton8);
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-
-        jMenu2.setMnemonic('d');
-        jMenu2.setText("Datei");
-        jMenu2.setToolTipText("Datei Men\u00fc");
-        jMenuItem1.setMnemonic('b');
-        jMenuItem1.setText("Beenden");
-        jMenuItem1.setToolTipText("Programm beenden");
-        jMenuItem1.setBorder(null);
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 control.this.actionPerformed(evt);
             }
         });
 
-        jMenu2.add(jMenuItem1);
+        jPanel1.add(jButton8);
 
-        jMenuBar2.add(jMenu2);
-
-        setJMenuBar(jMenuBar2);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }//GEN-END:initComponents
@@ -170,14 +169,20 @@ public class control extends javax.swing.JFrame {
         String cmd = evt.getActionCommand();
         
         if(cmd == "Beenden") System.exit(0);
+        else if(cmd == "direkt") {
+            if(callDialog == null) callDialog = new CallDialog();
+            callDialog.show();
+            jButton1.setEnabled(true);
+            jButton2.setEnabled(true);
+        }
         else if(cmd == "Empfangsfenster") {
-            if(empfangsfenster == null) empfangsfenster = new video(video.EMPFANG);
+            if(empfangsfenster == null) empfangsfenster = new video(video.EMPFANG,callDialog.getAddress(),callDialog.getPort());
+            empfangsfenster.setTitle(callDialog.getAddress()+":"+callDialog.getPort());
             empfangsfenster.show();
         }
         else if(cmd == "Sendefenster") {
-            if(sendefenster == null) sendefenster = new video(video.VERSAND);
-            sendefenster.show();
-            
+            if(sendefenster == null) sendefenster = new video(video.VERSAND,callDialog.getAddress(),callDialog.getPort());
+            sendefenster.show(); 
         }
         else if(cmd == "Chatfenster"){
             if(chatfenster == null) chatfenster = new chat();
@@ -217,9 +222,6 @@ public class control extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
     

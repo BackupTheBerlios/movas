@@ -6,6 +6,10 @@
 
 package movas.Init;
 
+
+import javax.media.rtp.event.*;
+import com.sun.media.ui.*;
+
 import java.awt.*;
 import java.net.*;
 import javax.media.*;
@@ -13,13 +17,15 @@ import javax.media.control.*;
 import javax.media.datasink.*;
 import javax.media.format.*;
 import javax.media.protocol.*;
+import javax.media.rtp.*;
+import javax.media.rtp.rtcp.*;
 import javax.swing.*;
 import java.util.*;
 /**
  *
  * @author  MS
  */
-public class InitVideo extends javax.swing.JPanel implements ControllerListener{
+public class InitVideo extends javax.swing.JPanel implements ReceiveStreamListener, ControllerListener{
     Player player = null;
     DataSource mediafile = null;
     int titelleiste;
@@ -27,7 +33,21 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
     Processor processor = null;
     boolean configured = false;
     boolean realized = false;
-        
+    SessionManager mgr=null;
+    SendStream rtpstream=null;
+    SendStream rtpstream2=null;
+    DataSource source = null;   
+    Vector playerlist = new Vector();
+    private String address = null;
+    private int DestPort=0;
+    
+    static DataSource dsource=null; 
+    
+    boolean terminatedbyClose = false;
+    static boolean firststream = false;
+    
+    
+    
     private static boolean			debugDeviceList = false;   
     private static String			defaultVideoDeviceName = null;
     private static String			defaultAudioDeviceName = null;   
@@ -35,14 +55,25 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
     private static CaptureDeviceInfo            captureAudioDevice = null;
     private static Structure                    struct=null;
     private static DeviceInfo                   DI=null;
+    
    
 
     
     /** Creates new form Video */
-    public InitVideo() {
+    public InitVideo(int direction,String address,int DestPort) {
         initComponents();
-        try{
-            struct=new InitFileHandler().read();
+        this.address=address;
+        this.DestPort=DestPort;
+        switch(direction){
+            case movas.GUI.video.EMPFANG: InitReceive();break;
+            case movas.GUI.video.VERSAND: InitSend();break;
+            default: System.err.print("No Video Direction defined!");break;
+        }
+    }
+    
+    private void InitSend(){
+    try{
+        struct=new InitFileHandler().read();
         }catch(Exception e){e.printStackTrace();}
         DI=new DeviceInfo();   
         getDevices();
@@ -102,45 +133,61 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
                 } catch (Exception exe) {}
                 processor.addControllerListener(this);
                 processor.configure();
-                while (!configured) {try{this.wait(1000);}catch(Exception e){}}
-                processor.setContentDescriptor(new FileTypeDescriptor(FileTypeDescriptor.MSVIDEO));
-                processor.getTrackControls()[0].setFormat(new VideoFormat(VideoFormat.H263));
-                processor.getTrackControls()[1].setFormat(new AudioFormat(AudioFormat.GSM_MS));
+                while (!configured) {try{this.wait(100);}catch(Exception e){}}
+                processor.setContentDescriptor(new ContentDescriptor( ContentDescriptor.MIXED));
+                processor.getTrackControls()[0].setFormat(new VideoFormat(VideoFormat.JPEG_RTP));
+                processor.getTrackControls()[1].setFormat(new AudioFormat(AudioFormat.GSM_RTP));
                 processor.realize();
                 
-                while (!realized) {try{this.wait(1000);}catch(Exception e){}}
-		DataSource source = processor.getDataOutput();
-                
-               MediaLocator dest = new MediaLocator("file:///D:/test2.avi");
+                while (!realized) {try{this.wait(100);}catch(Exception e){}}
+		
+                DataSource source = javax.media.Manager.createCloneableDataSource(processor.getDataOutput());
+                DataSource source1 = ((SourceCloneable)source).createClone();
+                DataSource source2 = ((SourceCloneable)source).createClone();
+               // String URL = "rtp://192.168.0.3:22224/video/1";
+                //MediaLocator dest = new MediaLocator(URL);
   // create a datasink to do the file writing & open the sink to
   // make sure we can write to it.
-  DataSink filewriter = null;
+ /* DataSink rtpsender = null;
   try {
-      filewriter = Manager.createDataSink(source, dest);
-      filewriter.open();
-  } catch (Exception e) {}
-               //nur zu Testzwecken                
-               /* for (int i=0;i<processor.getSupportedContentDescriptors().length;i++) {
-                    System.out.println("FORMAT: "+(processor.getSupportedContentDescriptors())[i].toString());
-                }
-                for (int i=0;i<processor.getTrackControls().length;i++) {
-                    System.out.println("TrackControl: "+(processor.getTrackControls())[i].getFormat().toString());
-                }
-                
-                for (int i=0;i<processor.getTrackControls().length;i++) 
-                for(int j=0;j<(processor.getTrackControls())[i].getSupportedFormats().length;j++){
-                    System.out.println("SupportedTrackControl: "+(processor.getTrackControls())[i].getSupportedFormats()[j].toString());
-                }
-                
-                Vector plgin = PlugInManager.getPlugInList((processor.getTrackControls())[0].getFormat(),(new VideoFormat(VideoFormat.MPEG)),PlugInManager.CODEC);
-                Enumeration plg = plgin.elements();
-                while (plg.hasMoreElements()) {
-                    System.out.println("PLUGIN.x: "+plg.nextElement().toString());
-                }*/ 
+      rtpsender = Manager.createDataSink(source, dest);
+      rtpsender.open();
+  } catch (Exception e) {}*/
+  SessionManager rtpsm=null;
+  SessionManager rtpsm2=null;
+  try{
+  
+        rtpsm = this.createManager(      address,
+                                         struct.KomPort+2,
+                                         128,
+                                         false,
+                                         true); 
+        rtpsm2 = this.createManager(     address,
+                                         struct.KomPort,
+                                         128,
+                                         false,
+                                         true); 
+  }catch(Exception e){e.printStackTrace();}
+         // The session manager then needs to be initialized and started:
+         // rtpsm.initSession(...); 
+         // rtpsm.startSession(...); 
+ 
+         try {
+             rtpstream = rtpsm.createSendStream(processor.getDataOutput(),0);
+             rtpstream2 = rtpsm2.createSendStream(processor.getDataOutput(),1);
+
+         } catch (Exception e) {
+             e.printStackTrace();
+         } 
+  
+  
+  
   
                 try{
                 processor.start();
-                filewriter.start();
+                rtpstream.start();
+                rtpstream2.start();
+                //rtpsender.start();
                 }catch(Exception e){}
         
                 
@@ -156,6 +203,88 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
         player.start();     
     }
     
+    private void InitReceive(){
+        SessionManager rtpsm = this.createManager(address,DestPort,128,true,false); 
+         SessionManager rtpsm2 = this.createManager(address,DestPort+2,128,true,false); 
+    }
+    
+    
+    private SessionManager createManager(String address,
+                                         int port,
+                                         int ttl,
+                                         boolean listener,
+                                         boolean sendlistener)
+     {
+         mgr = (SessionManager)new com.sun.media.rtp.RTPSessionMgr();
+         
+         if (mgr == null) return null;
+ 
+        //mgr.addFormat(new VideoFormat(VideoFormat.H263_RTP),10);
+        //mgr.addFormat(new AudioFormat(AudioFormat.GSM_RTP),18);
+ 
+         if (listener) mgr.addReceiveStreamListener(this);
+        // if (sendlistener) new RTPSendStreamWindow(mgr);
+         
+         // ask session mgr to generate the local participant's CNAME
+         String cname = mgr.generateCNAME();
+         String username = null;
+ 
+         try {
+             username = System.getProperty("user.name");
+         } catch (SecurityException e){
+             username = "jmf-user";
+         }
+         
+         // create our local Session Address
+         SessionAddress localaddr = new SessionAddress();
+         
+         try{
+             InetAddress destaddr =  InetAddress.getByName(address);
+ 
+             SessionAddress sessaddr = new SessionAddress(destaddr,
+                                                          port,
+                                                          destaddr,
+                                                          port + 1);
+             SourceDescription[] userdesclist= new SourceDescription[]
+             {
+                 new SourceDescription(SourceDescription
+                                       .SOURCE_DESC_EMAIL,
+                                       "jmf-user@sun.com",
+
+                                       1,
+                                       false),
+ 
+                 new SourceDescription(SourceDescription
+                                       .SOURCE_DESC_CNAME,
+                                       cname,
+                                       1,
+                                       false),
+ 
+                 new SourceDescription(SourceDescription
+                                       .SOURCE_DESC_TOOL,
+                                       "JMF RTP Player v2.0",
+                                       1,
+                                       false)
+             };
+ 
+             mgr.initSession(localaddr,
+                             userdesclist,
+                             0.05,
+                             0.25);
+             
+             
+             
+             
+             mgr.startSession(sessaddr,ttl,null);
+         } catch (Exception e) {
+             System.err.println(e.getMessage());
+             return null;
+         }
+         
+         return mgr;
+     }
+    
+    
     public void start() { 
 
     }
@@ -165,30 +294,27 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
             player.stop();
             player.close();
             processor.close();
-            filewriter.close();
+           // filewriter.close();
+            mgr.closeSession("RTP Session Terminated");
+            this.closeManager();
+            mgr = null;
         } catch (Exception ex) {}
     }
     public void destroy() {
         this.removeAll();
         System.exit(0);
     }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
     private void initComponents() {
-        //VPanel = new javax.swing.JPanel();
-        //jPanel1 = new javax.swing.JPanel();
         
 
         this.setLayout(new java.awt.BorderLayout());
 
-        //this.add(VPanel, java.awt.BorderLayout.CENTER);
-
-        
-
-        //this.add(jPanel1, java.awt.BorderLayout.SOUTH);
 
     }
     
@@ -207,19 +333,126 @@ public class InitVideo extends javax.swing.JPanel implements ControllerListener{
     public void controllerUpdate(javax.media.ControllerEvent event)  {
         if (event instanceof RealizeCompleteEvent) {
             realized=true;
+            
             try {
             Component comp;
             if ((comp = player.getVisualComponent())!=null) this.add("Center",comp);
             if ((comp = player.getControlPanelComponent())!=null) this.add("South",comp);           
-            this.setSize(player.getVisualComponent().getPreferredSize().width+8,player.getVisualComponent().getPreferredSize().height+player.getControlPanelComponent().getPreferredSize().height+titelleiste);
+            //this.setSize(player.getVisualComponent().getPreferredSize().width+8,player.getVisualComponent().getPreferredSize().height+player.getControlPanelComponent().getPreferredSize().height+titelleiste);
             //this.setBounds(0,0,320,250);
             validate(); 
             } catch (Exception e) {}
         }
         if (event instanceof ConfigureCompleteEvent) configured = true;
        // System.out.println(event.toString());
+        this.repaint();
     }    
     
+     public void update( ReceiveStreamEvent event)
+     {
+         Player newplayer = null;
+         RTPPlayerWindow playerWindow = null;
+ 
+         // find the sourceRTPSM for this event
+         SessionManager source = (SessionManager)event.getSource();
+ 
+         // create a new player if a new recvstream is detected
+         if (event instanceof NewReceiveStreamEvent)
+         {
+             String cname = "Java Media Player";
+             ReceiveStream stream = null;
+             
+             try
+             {
+                 // get a handle over the ReceiveStream
+                 stream =((NewReceiveStreamEvent)event)
+                         .getReceiveStream();
+ 
+                 Participant part = stream.getParticipant();
+ 
+                 if (part != null) cname = part.getCNAME();
+ 
+                 // get a handle over the ReceiveStream datasource
+                 
+                
+                     dsource= stream.getDataSource();
+                    
+                 // create a player by passing datasource to the 
+                 // Media Manager
+                 newplayer = Manager.createPlayer(dsource);
+                 System.out.println("created player " + newplayer.toString());
+                
+                    
+                 
+             } catch (Exception e) {
+                 System.err.println("NewReceiveStreamEvent exception " 
+                                    + e.getMessage());
+                 e.printStackTrace();
+                 return;
+             }
+ 
+             if (newplayer == null) return;
+ 
+             playerlist.addElement(newplayer);
+             newplayer.addControllerListener(this);
+            
+             // send this player to player GUI
+             //playerWindow = new RTPPlayerWindow( newplayer, cname);
+             newplayer.realize();
+             
+              boolean end=true;
+                 while(end){
+                    if(newplayer.getState()==javax.media.Player.Realized){
+                    newplayer.start();
+                    end=false;
+                    }
+                    try{this.wait(1000);}catch(Exception e){}
+                    //System.out.println("newplayer: "+newplayer.getState());
+                    
+                }
+                end=true;
+                /*while(end){
+                    if(newplayer.getState() == javax.media.Player.Started)end=false;
+                    try{this.wait(100);}catch(Exception e){}
+                    //System.out.println(newplayer.getState());
+                }*/
+                
+                try{
+                    newplayer.getVisualComponent().toString();
+               
+                    this.removeAll();
+                    System.out.println(newplayer.getVisualComponent().toString());
+                    this.add(BorderLayout.CENTER,newplayer.getVisualComponent());
+                    this.add(BorderLayout.SOUTH,newplayer.getControlPanelComponent());
+                    validate();
+                    this.repaint();    
+                }catch(Exception e){e.printStackTrace();}
+         }
+     }
+     public void closeManager()
+     {
+         terminatedbyClose = true;
+     
+         // first close all the players
+         for (int i = 0; i < playerlist.size(); i++) {
+             ((Player)playerlist.elementAt(i)).close();
+         }
+         if (mgr != null) {
+             mgr.closeSession("RTP Session Terminated");
+             mgr = null;
+         }
+     }
+    class RTPPlayerWindow extends PlayerWindow 
+     {
+         public RTPPlayerWindow( Player player, String title) 
+         {
+             super(player);
+             setTitle(title);
+         }
+         public void Name(String title){
+             setTitle(title);
+         }
+     }
     // Variables declaration - do not modify
    // private javax.swing.JPanel VPanel;
     

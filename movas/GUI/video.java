@@ -18,28 +18,30 @@ public class video extends javax.swing.JFrame {
     public static final int VERSAND=1;
     
     /** Creates new form video */
-    public video() {
-        initComponents();
+    private video() {
+        /*initComponents();
         //this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         JPanelInitVideo=new movas.Init.InitVideo();
         this.getContentPane().add(JPanelInitVideo);
         this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()/2),
         (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()/2));
-        this.repaint();
+        this.repaint();*/
+        
     }
     
-    public video(int typ){
+    public video(int typ,String address,int DestPort){
         initComponents();
         //this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.typ = typ;
         if(typ==EMPFANG){
-        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2),
-        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()));
+            JPanelInitVideo=new movas.Init.InitVideo(typ,address,DestPort);
+            this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2),
+            (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()));
         }
         else{
-        JPanelInitVideo=new movas.Init.InitVideo();
-        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2),
-        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2));
+            JPanelInitVideo=new movas.Init.InitVideo(typ,address,DestPort);
+            this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2),
+            (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2));
         }
         this.getContentPane().add(JPanelInitVideo);
         this.repaint();
@@ -53,7 +55,6 @@ public class video extends javax.swing.JFrame {
     private void initComponents() {//GEN-BEGIN:initComponents
         jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPanelVideo = new javax.swing.JPanel();
 
@@ -67,9 +68,6 @@ public class video extends javax.swing.JFrame {
         });
 
         jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setText("Sie sind mit bla verbunden");
-        jPanel1.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jButton1.setMnemonic('a');
         jButton1.setText("Ausblenden");
@@ -89,7 +87,7 @@ public class video extends javax.swing.JFrame {
         getContentPane().add(jPanelVideo, java.awt.BorderLayout.CENTER);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-300)/2, (screenSize.height-240)/2, 300, 240);
+        setBounds((screenSize.width-300)/2, (screenSize.height-280)/2, 300, 280);
     }//GEN-END:initComponents
 
     private void ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionPerformed
@@ -108,15 +106,12 @@ public class video extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        new video(1).show();
-    }
+    
 
     
     private javax.swing.JPanel JPanelInitVideo;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelVideo;
     private javax.swing.JToolBar jToolBar1;

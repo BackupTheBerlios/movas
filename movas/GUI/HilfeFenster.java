@@ -103,7 +103,7 @@ public class HilfeFenster extends javax.swing.JFrame {
 
         jButton3.setMnemonic('c');
         jButton3.setText("Chatfenster");
-        jButton3.setToolTipText("Text-Caht Fenster \u00f6ffnen");
+        jButton3.setToolTipText("Text-Chat Fenster \u00f6ffnen");
         jButton3.setBorder(new javax.swing.border.BevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -166,8 +166,8 @@ public class HilfeFenster extends javax.swing.JFrame {
 
         jPanel2.add(jButton7);
 
-        jButton8.setMnemonic('a');
-        jButton8.setText("Auflegen");
+        jButton8.setMnemonic('b');
+        jButton8.setText("Beenden");
         jButton8.setToolTipText("aktuelle Verbindung beenden");
         jButton8.setBorder(new javax.swing.border.BevelBorder(javax.swing.border.BevelBorder.RAISED));
         jButton8.setFocusPainted(false);
@@ -201,7 +201,7 @@ public class HilfeFenster extends javax.swing.JFrame {
     
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
-        System.exit(0);
+        this.hide();
     }//GEN-LAST:event_exitForm
     
     /**
