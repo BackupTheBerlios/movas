@@ -101,6 +101,7 @@ public class DeviceInfo {
                 return formats[y];
             }
          }
+         return null;
      }
      
 /*     

@@ -10,6 +10,8 @@ package movas.GUI;
  */
 public class OptionsDialog extends javax.swing.JFrame {
     
+    movas.Init.DeviceInfo hardware;
+    
     /** Creates new form options */
     public OptionsDialog() {
         initComponents();
@@ -17,15 +19,35 @@ public class OptionsDialog extends javax.swing.JFrame {
         this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()/2),
         (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()/2));
         
+       
         
+        hardware = new movas.Init.DeviceInfo();
+
+        java.util.Vector [] tmp_device = hardware.getDevices();
         
-        ComboAudioDevice.addItem("JavaSound");
-        ComboAudioDevice.addItem("DirectSound");
-        ComboVideoDevice.addItem("WDM Capture Driver");
-        ComboVideoFormat.addItem("176x144");
-        ComboVideoFormat.addItem("352x288");
+        for (int i=0; i<tmp_device[0].size();i++) 
+                ComboVideoDevice.addItem((String)tmp_device[0].elementAt(i));
+        for (int i=0; i<tmp_device[1].size();i++)
+                ComboAudioDevice.addItem((String)tmp_device[1].elementAt(i));
+        try {
+            java.util.Vector tmp_formats = hardware.getSupportedFormats(hardware.getVideoDevice((String)ComboVideoDevice.getSelectedItem()));
+            for (int i=0; i<tmp_formats.size();i++) {
+                ComboVideoFormat.addItem((String)tmp_formats.elementAt(i));
+            }
+        } catch (Exception e) {}
+        try {
+            java.util.Vector tmp_formats = hardware.getSupportedFormats(hardware.getAudioDevice((String)ComboAudioDevice.getSelectedItem()));
+            for (int i=0; i<tmp_formats.size();i++) {
+                ComboAudioFormat.addItem((String)tmp_formats.elementAt(i));
+            }
+        } catch (Exception e) {}
         
-        
+        /*private javax.swing.JComboBox ComboAudioCodec;
+    private javax.swing.JComboBox ComboAudioDevice;
+    private javax.swing.JComboBox ComboAudioFormat;
+    private javax.swing.JComboBox ComboVideoCodec;
+    private javax.swing.JComboBox ComboVideoDevice;
+    private javax.swing.JComboBox ComboVideoFormat;*/
     }
     
     /** This method is called from within the constructor to
@@ -86,6 +108,13 @@ public class OptionsDialog extends javax.swing.JFrame {
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         ComboAudioDevice.setBackground(new java.awt.Color(255, 255, 255));
+        ComboAudioDevice.setActionCommand("audio");
+        ComboAudioDevice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboDeviceActionPerformed(evt);
+            }
+        });
+
         jPanel5.add(ComboAudioDevice, java.awt.BorderLayout.NORTH);
 
         jPanel2.add(jPanel5);
@@ -121,6 +150,13 @@ public class OptionsDialog extends javax.swing.JFrame {
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         ComboVideoDevice.setBackground(new java.awt.Color(255, 255, 255));
+        ComboVideoDevice.setActionCommand("video");
+        ComboVideoDevice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComboDeviceActionPerformed(evt);
+            }
+        });
+
         jPanel9.add(ComboVideoDevice, java.awt.BorderLayout.NORTH);
 
         jPanel3.add(jPanel9);
@@ -219,6 +255,29 @@ public class OptionsDialog extends javax.swing.JFrame {
 
         pack();
     }//GEN-END:initComponents
+
+    private void ComboDeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboDeviceActionPerformed
+        // Add your handling code here:
+        if (evt.getActionCommand()=="audio") {
+             try {
+                java.util.Vector tmp_formats = hardware.getSupportedFormats(hardware.getAudioDevice((String)ComboAudioDevice.getSelectedItem()));
+                ComboAudioFormat.removeAllItems();
+                for (int i=0; i<tmp_formats.size();i++) {
+                    ComboAudioFormat.addItem((String)tmp_formats.elementAt(i));
+                }
+            } catch (Exception e) {}
+        }
+        if (evt.getActionCommand()=="video") {
+             try {
+                java.util.Vector tmp_formats = hardware.getSupportedFormats(hardware.getVideoDevice((String)ComboVideoDevice.getSelectedItem()));
+                ComboVideoFormat.removeAllItems();
+                for (int i=0; i<tmp_formats.size();i++) {
+                    ComboVideoFormat.addItem((String)tmp_formats.elementAt(i));
+                }
+            } catch (Exception e) {}
+        }
+        
+    }//GEN-LAST:event_ComboDeviceActionPerformed
 
     private void jButton_AbortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AbortActionPerformed
         // Add your handling code here:
