@@ -181,8 +181,12 @@ public class control extends javax.swing.JFrame {
             empfangsfenster.show();
         }
         else if(cmd == "Sendefenster") {
+            this.setCursor(java.awt.Cursor.WAIT_CURSOR);
+            try{this.wait(100);}catch(Exception e){}
             if(sendefenster == null) sendefenster = new video(video.VERSAND,callDialog.getAddress(),callDialog.getPort());
             sendefenster.show(); 
+            try{this.wait(100);}catch(Exception e){}
+            this.setCursor(java.awt.Cursor.DEFAULT_CURSOR);
         }
         else if(cmd == "Chatfenster"){
             if(chatfenster == null) chatfenster = new chat();

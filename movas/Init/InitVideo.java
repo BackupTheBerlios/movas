@@ -135,7 +135,7 @@ public class InitVideo extends javax.swing.JPanel implements ReceiveStreamListen
                 processor.configure();
                 while (!configured) {try{this.wait(100);}catch(Exception e){}}
                 processor.setContentDescriptor(new ContentDescriptor( ContentDescriptor.MIXED));
-                processor.getTrackControls()[0].setFormat(new VideoFormat(VideoFormat.JPEG_RTP));
+                processor.getTrackControls()[0].setFormat(new VideoFormat(VideoFormat.H263_RTP));
                 processor.getTrackControls()[1].setFormat(new AudioFormat(AudioFormat.GSM_RTP));
                 processor.realize();
                 
