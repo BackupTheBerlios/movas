@@ -88,8 +88,19 @@ public class DeviceInfo {
          return formats;
      }
      
-     public javax.media.Format getAudioFormat(CaptureDeviceInfo device){
-         
+     /** Die Methode liefert für ein bestimmtes Device das Format anhand des übergebenen
+      * Namen zurück.
+      * @param device Das Gerät, für welches ein Format ermittelt werden soll
+      * @param  Der Name des Formates
+      * @return Format
+      */     
+     public javax.media.Format getFormat(CaptureDeviceInfo device, String format){
+         javax.media.Format formats[]=device.getFormats();
+         for (int y = 0; y < formats.length; y++){
+            if(formats[y].toString()==format){
+                return formats[y];
+            }
+         }
      }
      
 /*     
