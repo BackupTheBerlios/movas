@@ -3,7 +3,7 @@
  *
  * Created on 1. November 2003, 10:54
  */
-package GUI;
+package movas.GUI;
 /**
  *
  * @author  MS

@@ -88,6 +88,9 @@ public class DeviceInfo {
          return formats;
      }
      
+     public javax.media.Format getAudioFormat(CaptureDeviceInfo device){
+         
+     }
      
 /*     
       public static void main(String args[]) {

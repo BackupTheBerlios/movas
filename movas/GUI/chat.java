@@ -4,7 +4,7 @@
  * Created on 6. November 2003, 17:04
  */
 
-package GUI;
+package movas.GUI;
 
 /**
  *
