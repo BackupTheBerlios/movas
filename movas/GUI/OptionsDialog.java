@@ -342,7 +342,6 @@ public class OptionsDialog extends javax.swing.JFrame {
     public void setSelectedVideoCodec(String _VideoCodec) {ComboVideoCodec.setSelectedItem(_VideoCodec);}
     public void setSelectedVideoFormat(String _VideoFormat) {ComboVideoFormat.setSelectedItem(_VideoFormat);}
     public void setSelectedVideoDevice(String _VideoDevice) {ComboVideoDevice.setSelectedItem(_VideoDevice);}
-    public void setKommunikationsport(int _KomPort) { this.TextFieldPort.setText(_KomPort+"");}
     /** Das Port Edit Textfeld mit dem Korrekten Port belegen
      * @param port Der momentan eingestellte Kommunikationsport
      */    

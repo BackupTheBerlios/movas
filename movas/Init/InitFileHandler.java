@@ -35,6 +35,21 @@ public class InitFileHandler {
         fos.close();
     }
     
+    public void read(movas.GUI.OptionsDialog options) throws java.lang.Exception{
+        FileInputStream fos = new FileInputStream("./setup.cfg");
+        ObjectInputStream f = new ObjectInputStream(fos);
+        Structure struct=((Structure)f.readObject());
+        f.close();
+        fos.close();
+        options.setKommunikationsPort(struct.KomPort);
+        options.setSelectedAudioDevice(struct.AudioDevice);
+        options.setSelectedVideoDevice(struct.VideoDevice);
+        options.setSelectedAudioFormat(struct.AudioFormat);
+        options.setSelectedVideoFormat(struct.VideoFormat);
+        options.setSelectedAudioCodec(struct.AudioCodec);
+        options.setSelectedVideoCodec(struct.VideoCodec);
+    }
+    
     /**
      * @param args the command line arguments
      */
