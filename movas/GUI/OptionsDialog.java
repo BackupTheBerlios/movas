@@ -42,12 +42,9 @@ public class OptionsDialog extends javax.swing.JFrame {
             }
         } catch (Exception e) {}
         
-        /*private javax.swing.JComboBox ComboAudioCodec;
-    private javax.swing.JComboBox ComboAudioDevice;
-    private javax.swing.JComboBox ComboAudioFormat;
-    private javax.swing.JComboBox ComboVideoCodec;
-    private javax.swing.JComboBox ComboVideoDevice;
-    private javax.swing.JComboBox ComboVideoFormat;*/
+        try{
+            new movas.Init.InitFileHandler().read(this);
+        }catch(Exception e){e.printStackTrace();}
     }
     
     /** This method is called from within the constructor to
@@ -287,12 +284,18 @@ public class OptionsDialog extends javax.swing.JFrame {
     private void jButton_ApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ApplyActionPerformed
         // Add your handling code here:
         //System.exit(0);
-        CallDialog CD = new CallDialog();
-        CD.show();
+        /*CallDialog CD = new CallDialog();
+        CD.show();*/
+        try{
+        new movas.Init.InitFileHandler().write(this);
+        }catch(Exception e){e.printStackTrace();}
     }//GEN-LAST:event_jButton_ApplyActionPerformed
 
     private void jButton_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_OKActionPerformed
         // Add your handling code here:
+        try{
+        new movas.Init.InitFileHandler().write(this);
+        }catch(Exception e){e.printStackTrace();}
         System.exit(0);
     }//GEN-LAST:event_jButton_OKActionPerformed
    
@@ -385,7 +388,7 @@ public class OptionsDialog extends javax.swing.JFrame {
         try{
         OptionsDialog tmp=new OptionsDialog();
         tmp.show();
-        new movas.Init.InitFileHandler().write(tmp);
+       
         }catch(Exception e){}
         
         

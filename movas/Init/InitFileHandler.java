@@ -10,7 +10,7 @@ package movas.Init;
  *
  * @author  2fast
  */
-
+import movas.Init.*;
 import java.io.*;
 public class InitFileHandler {
     
@@ -38,7 +38,8 @@ public class InitFileHandler {
     public void read(movas.GUI.OptionsDialog options) throws java.lang.Exception{
         FileInputStream fos = new FileInputStream("./setup.cfg");
         ObjectInputStream f = new ObjectInputStream(fos);
-        Structure struct=((Structure)f.readObject());
+        Structure struct = new Structure();
+        struct=((Structure)f.readObject());
         f.close();
         fos.close();
         options.setKommunikationsPort(struct.KomPort);
@@ -48,23 +49,9 @@ public class InitFileHandler {
         options.setSelectedVideoFormat(struct.VideoFormat);
         options.setSelectedAudioCodec(struct.AudioCodec);
         options.setSelectedVideoCodec(struct.VideoCodec);
+        System.out.println(struct.AudioDevice);
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-    }
-    
-    private class Structure implements java.io.Serializable{
-        private int KomPort;
-        private String VideoDevice;
-        private String AudioDevice;
-        private String VideoFormat;
-        private String AudioFormat;
-        private String VideoCodec;
-        private String AudioCodec;
-    }
 
 }
 
