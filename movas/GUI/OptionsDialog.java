@@ -336,10 +336,13 @@ public class OptionsDialog extends javax.swing.JFrame {
         ComboAudioFormat.setSelectedItem(selected); 
     }
     
-    public void setAudioCodecs() {}
-    
-    public void setVideoCodecs() {}
-    
+    public void setSelectedAudioCodec(String _AudioCodec) {ComboAudioCodec.setSelectedItem(_AudioCodec);} 
+    public void setSelectedAudioFormat(String _AudioFormat) {ComboAudioFormat.setSelectedItem(_AudioFormat);} 
+    public void setSelectedAudioDevice(String _AudioDevice) {ComboAudioDevice.setSelectedItem(_AudioDevice);} 
+    public void setSelectedVideoCodec(String _VideoCodec) {ComboVideoCodec.setSelectedItem(_VideoCodec);}
+    public void setSelectedVideoFormat(String _VideoFormat) {ComboVideoFormat.setSelectedItem(_VideoFormat);}
+    public void setSelectedVideoDevice(String _VideoDevice) {ComboVideoDevice.setSelectedItem(_VideoDevice);}
+    public void setKommunikationspoer(int _KomPort) { this.TextFieldPort.setText(_KomPort+"");}
     /** Das Port Edit Textfeld mit dem Korrekten Port belegen
      * @param port Der momentan eingestellte Kommunikationsport
      */    
