@@ -11,7 +11,9 @@ package movas.Init;
  * @author  2fast
  */
 import movas.Init.*;
+import movas.GUI.*;
 import java.io.*;
+
 public class InitFileHandler {
     
     /** Creates a new instance of InitFileHandler */

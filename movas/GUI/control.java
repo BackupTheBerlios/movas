@@ -10,6 +10,9 @@ package movas.GUI;
  *
  * @author  2fast
  */
+import movas.GUI.*;
+import movas.Init.*;
+
 public class control extends javax.swing.JFrame {
     private video   empfangsfenster=null;
     private video   sendefenster=null;
@@ -20,8 +23,8 @@ public class control extends javax.swing.JFrame {
     public control() {
         initComponents();
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()/2),
-        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()/2));
+        this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()),
+        (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()));
     }
     
     /** This method is called from within the constructor to

@@ -25,8 +25,10 @@ public class HilfeFenster extends javax.swing.JFrame {
     /** Creates new form HilfeFenster */
     public HilfeFenster() {
         initComponents();
-        jEditorPane1.setContentType("text/html"); 
-        jEditorPane1.setPage(startfenster);
+        jEditorPane1.setContentType("text/html");
+        try {
+            jEditorPane1.setPage(startfenster);
+        } catch (Exception e) {}
          this.setLocation((java.awt.Toolkit.getDefaultToolkit().getScreenSize().width/2)-(this.getWidth()/2),
         (java.awt.Toolkit.getDefaultToolkit().getScreenSize().height/2)-(this.getHeight()/2));
     }
@@ -186,7 +188,7 @@ public class HilfeFenster extends javax.swing.JFrame {
     private void ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionPerformed
         // Add your handling code here:
         try {
-        if (evt.getActionCommand().equals("Empfangsfenster"))jEditorPane1.setPage(empfangsfenster);
+            if (evt.getActionCommand().equals("Empfangsfenster"))jEditorPane1.setPage(empfangsfenster);
             else if (evt.getActionCommand().equals("Sendefenster"))jEditorPane1.setPage(sendefenster);
             else if (evt.getActionCommand().equals("Chatfenster"))jEditorPane1.setPage(chatfenster);
             else if (evt.getActionCommand().equals("Optionen"))jEditorPane1.setPage(optionfenster);
