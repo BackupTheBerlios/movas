@@ -12,9 +12,18 @@ package GUI;
  */
 public class video extends javax.swing.JFrame {
     
+    private int typ; 
+    
+    public static final int EMPFANG=0;
+    public static final int VERSAND=1;
+    
     /** Creates new form video */
     public video() {
         initComponents();
+    }
+    
+    public video(int typ){
+        this.typ = typ;
     }
     
     /** This method is called from within the constructor to
